@@ -23,9 +23,9 @@ public class PlayerController : MonoBehaviour {
 	public GameObject Bullet, Gun, background;
 
 	//fire rate parameters
-	public float fireRate = 0.2f;
+	public float fireRate = 0.5f;
 	private float nextFire = 0.0f;
-	public float bulletSpeed = 6.0f;
+	public float bulletSpeed = 12.0f;
 
 	public int damage = 34;
 
@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour {
 	private bool isInvincible = false;
 	private float timeSpentInvincible;
 	private float boundMinX, boundMaxX, boundMinY, boundMaxY;
+	public GUIText guiText;
 
 	int fontSize = 200;
 
@@ -46,10 +47,11 @@ public class PlayerController : MonoBehaviour {
 		boundMinY = background.renderer.bounds.min.y;
 		boundMaxY = background.renderer.bounds.max.y;
 		rigidbody2D.drag = 50;
+		//guiText.pixelOffset = new Vector2(378, 170);
 	}
 
 	void OnGUI(){
-		Rect r = new Rect(0,0, 350, 96);
+		Rect r = new Rect(0,0, Screen.width, 96);
 		GUILayout.BeginArea(r);
 		GUILayout.BeginHorizontal();
 
@@ -76,6 +78,10 @@ public class PlayerController : MonoBehaviour {
 			                                        Mathf.FloorToInt(Screen.height * fontSize/1000));
 			GUI.Label( gameOverRect, "<b><color=red>Game over!</color></b>", gameOverTextStyle);
 		}
+
+		guiText.text = "TEST";
+
+
 	}
 	
 	// Update is called once per frame
@@ -115,11 +121,11 @@ public class PlayerController : MonoBehaviour {
 		// Apply horizontal velocity
 		if (Mathf.Abs(h) > 0) {
 			//check if player is at edges of background
-			if(transform.position.x > boundMaxX){
+			if(transform.position.x > boundMaxX - 0.75f){
 				//if so, make sure the player cannot cross the boundaries
-				h = Mathf.Clamp(h, -1, 0);
-			}else if(transform.position.x < boundMinX){
-				h = Mathf.Clamp(h, 0, 1);
+				h = Mathf.Clamp(h, -1, -0.5f);
+			}else if(transform.position.x < boundMinX + 0.75f){
+				h = Mathf.Clamp(h, 0.5f, 1);
 			}
 			rigidbody2D.velocity = new Vector2(h * speed, rigidbody2D.velocity.y);
 		}
@@ -127,11 +133,11 @@ public class PlayerController : MonoBehaviour {
 		// Apply vertical velocity
 		if (Mathf.Abs(v) > 0) {
 			//check if player is at edges of background
-			if(transform.position.y > boundMaxY){
+			if(transform.position.y > boundMaxY - 0.75f){
 				//if so, make sure the player cannot cross the boundaries
-				v = Mathf.Clamp(v, -1, 0);
-			}else if(transform.position.y < boundMinY){
-				v = Mathf.Clamp(v, 0, 1);
+				v = Mathf.Clamp(v, -1, -0.5f);
+			}else if(transform.position.y < boundMinY + 0.75f){
+				v = Mathf.Clamp(v, 0.5f, 1);
 			}
 			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, v * speed);
 		}
@@ -174,7 +180,7 @@ public class PlayerController : MonoBehaviour {
 			currentBullet.transform.eulerAngles = angle;
 			Vector3 forceVector = currentBullet.transform.right;
 			//add force to the bullet to actually fire it away
-			currentBullet.rigidbody2D.AddForce(forceVector * bulletSpeed * 1.5f, ForceMode2D.Impulse);
+			currentBullet.rigidbody2D.AddForce(forceVector * bulletSpeed * 2f, ForceMode2D.Impulse);
 		}
 	}
 
@@ -208,6 +214,21 @@ public class PlayerController : MonoBehaviour {
 
 	public void addScore(int points){
 		score += points;
+	}
+
+	public void changeFireRate(float faster){
+		fireRate -= faster;
+		Debug.Log (fireRate);
+	}
+
+	public void changeDamage(int extraDamage){
+		damage += extraDamage;
+		Debug.Log (damage);
+	}
+
+	public void addHealth(int extraHealth){
+		health += extraHealth;
+		Debug.Log (health);
 	}
 
 }

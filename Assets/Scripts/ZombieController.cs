@@ -13,57 +13,77 @@ public class ZombieController : MonoBehaviour {
 	private PolygonCollider2D[] colliders;
 	private int currentColliderIndex = 0;
 
-	private bool isInvincible = false;
 	private float timeSpentInvincible;
 
-	//private int lives = 3;
 	public int health = 100;
 
 	public AudioClip enemyContactSound;
 	public AudioClip catContactSound;
 
+	//player, angle of zombie to face player, vector pos of player
+	private GameObject player;
+	private float zombieAngle;
+	private Vector3 targetPos;
+
+	bool startup;
+	private GameObject background;
+	private float boundMaxX, boundMinX, boundMaxY, boundMinY;
+
 	// Use this for initialization
 	void Start () {
+		//find gameobject for player
+		player = GameObject.Find ("Player");
+		//find gameobject for background
+		background = GameObject.Find ("background");
 		moveDirection = Vector3.right;
+		turnSpeed = 2f;
+		moveSpeed = 0.75f;
+		startup = true;
+		boundMaxX = background.renderer.bounds.max.x;
+		boundMinX = background.renderer.bounds.min.x;
+		boundMaxY = background.renderer.bounds.max.y;
+		boundMinY = background.renderer.bounds.min.y;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		// 1
-		Vector3 currentPosition = transform.position;
-		// 2
-		if( Input.GetButton("Fire1") ) {
-			// 3
-			Vector3 moveToward = Camera.main.ScreenToWorldPoint( Input.mousePosition );
-			// 4
-			moveDirection = moveToward - currentPosition;
-			moveDirection.z = 0; 
-			moveDirection.Normalize();
-		}
+		//get current zombie position
+		Vector3 currentPos = transform.position;
+		//find position of player (target)
+		targetPos = player.transform.position;
+		//find direction to target
+		moveDirection = targetPos - currentPos;
 
-		Vector3 target = moveDirection * moveSpeed + currentPosition;
-		transform.position = Vector3.Lerp( currentPosition, target, Time.deltaTime );
-
-		float targetAngle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-		transform.rotation = 
-			Quaternion.Slerp( transform.rotation, 
-			                 Quaternion.Euler( 0, 0, targetAngle ), 
-			                 turnSpeed * Time.deltaTime );
-
-		//enforce the bounds of the screen
-		EnforceBounds();
-
-		if(isInvincible){
-			timeSpentInvincible += Time.deltaTime;
-			if(timeSpentInvincible < 3f){
-				float remainder = timeSpentInvincible % .3f;
-				renderer.enabled = remainder > .15f;
-			}else {
-				renderer.enabled = true;
-				isInvincible = false;
+		//check if zombie is in startup
+		if(startup){
+			//if still in startup, move towards center first
+			moveDirection = new Vector3(0,0,0) - currentPos;
+			//and check if zombie is in playable field
+			if( (Mathf.Clamp(currentPos.x, boundMinX, boundMaxX) == currentPos.x) && (Mathf.Clamp(currentPos.y, boundMinY, boundMaxY) == currentPos.y) ){
+				//if zombie is in playable field, it is no longer in startup mode and should go find BRAAAIINS! 
+				startup = false;
 			}
 		}
+
+		//z axis is zero ofc
+		moveDirection.z = 0;
+		//normalize vector (return vector with magnitude of 1)
+		moveDirection.Normalize ();
+
+		//find out where to move to (with predefined speed)
+		Vector3 movePos = moveDirection * moveSpeed + currentPos;
+		//actual movement
+		transform.position = Vector3.Lerp (currentPos, movePos, Time.deltaTime);
+
+		//find angle in order to face target
+		float zombieAngle = Mathf.Atan2 (moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+		//rotate zombie to face target
+		transform.rotation = Quaternion.Slerp (transform.rotation, 
+		                                      Quaternion.Euler (0, 0, zombieAngle),
+		                                      turnSpeed * Time.deltaTime);
+
+
 	}
 
 	public void SetColliderForSprite(int spriteNum){
@@ -74,67 +94,24 @@ public class ZombieController : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other){
 
-//		if(other.CompareTag("Bullet")){
-//			health -= other.GetComponent<BulletScript>().damage;
-//			Debug.Log("hit");
-//		}
-//
-////		if(other.CompareTag("cat")){
-////			audio.PlayOneShot(catContactSound);
-////
-////		}else if (!isInvincible && other.CompareTag("enemy")){
-////			isInvincible = true;
-////			audio.PlayOneShot(enemyContactSound);
-////			timeSpentInvincible = 0;
-////			
-////		}
-//		if(lives > 5){
-//		}
-//		if(health <= 0){
-//			Debug.Log("Dead zombie!");
-//			Destroy(gameObject);
-//		}
-	}
-
-	private void EnforceBounds(){
-		//starting values 
-		Vector3 newPosition = transform.position;
-		Camera mainCamera = Camera.main;
-		Vector3 cameraPosition = mainCamera.transform.position;
-
-		//values needed for x bounds
-		float xDist = mainCamera.aspect * mainCamera.orthographicSize;
-		float xMax = cameraPosition.x + xDist;
-		float xMin = cameraPosition.x - xDist;
-
-		//values needed for y bounds
-		float yMax = mainCamera.orthographicSize;
-
-		//xbounds handling
-		if(newPosition.x < xMin || newPosition.x > xMax){
-			newPosition.x = Mathf.Clamp(newPosition.x, xMin, xMax);
-			moveDirection.x = -moveDirection.x;
-		}
-		//ybounds handling
-		if(newPosition.y < -yMax || newPosition.y > yMax){
-			newPosition.y = Mathf.Clamp(newPosition.y, -yMax, yMax);
-			moveDirection.y = -moveDirection.y;
-		}
-		//transforming to new position
-		transform.position = newPosition;
 	}
 
 	public void isHit(int damage){
-		Debug.Log("hit!");
+		//Debug.Log("hit!");
 		health -= damage;
 
 		if(health <= 0){
-			Debug.Log("Die zombie, die!");
+			//Debug.Log("Die zombie, die!");
 			GameObject.Find ("Player").GetComponent<PlayerController>().addScore(50);
 			Destroy(gameObject);
+			GameObject.Find ("background").GetComponent<SpawnScript>().checkZombies();
 		}else{
 			GameObject.Find("Player").GetComponent<PlayerController>().addScore(25);
 		}
+	}
+
+	public void healt(int extraHealth){
+		health += extraHealth;
 	}
 
 }

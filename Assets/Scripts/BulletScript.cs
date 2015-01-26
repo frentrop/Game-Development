@@ -5,12 +5,13 @@ public class BulletScript : MonoBehaviour
 {
 
 	private float bulletSpawn;
-	public float bulletDestroyTime = 2.0f;
+	public float bulletDestroyTime = 2.5f;
 	public float zombieRecoil = 0.03f;
 	public int damage;
 
 	void Start(){
 		bulletSpawn = Time.time;
+		//TODO add bullet fired sound effect
 	}
 
 	void Update(){
@@ -28,16 +29,19 @@ public class BulletScript : MonoBehaviour
 	}
 
 	void OnTriggerEnter2D(Collider2D coll){
+
 		if(coll.CompareTag("zombie")){
 			//Debug.Log("trigger collision");
 			coll.transform.Translate(zombieRecoil * gameObject.rigidbody2D.velocity.x, 
 			                         zombieRecoil * gameObject.rigidbody2D.velocity.y, 
 			                         0);
 			coll.GetComponent<ZombieController>().isHit(damage);
+			//TODO add bullet hit zombie sound effect
 			Destroy(gameObject);
 		}
 		if(coll.CompareTag("levelGeometry")){
 			Destroy(gameObject);
+			//TODO add level geometry hit sound effect
 		}
 	}
 
