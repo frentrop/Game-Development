@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour {
 	private bool isInvincible = false;
 	private float timeSpentInvincible;
 	private float boundMinX, boundMaxX, boundMinY, boundMaxY;
-	public GUIText guiText;
+	//public GUIText guiText;
 
 	int fontSize = 200;
 
@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour {
 		GUILayout.EndHorizontal();
 		GUILayout.EndArea();
 
-		GUI.Label( new Rect (Screen.width - 100, 0, 100, 64), "<size=40><b>" + score.ToString() + "</b></size>");
+		GUI.Label( new Rect (Screen.width - 100, 0, 100, 64), "<size=60><b>" + score.ToString() + "</b></size>");
 		//if health is below 0, display game over
 		if(health <= 0){
 			float w = 0.7f;
@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour {
 			GUI.Label( gameOverRect, "<b><color=red>Game over!</color></b>", gameOverTextStyle);
 		}
 
-		guiText.text = "TEST";
+		// guiText.text = "TEST";
 
 
 	}
@@ -218,17 +218,17 @@ public class PlayerController : MonoBehaviour {
 
 	public void changeFireRate(float faster){
 		fireRate -= faster;
-		Debug.Log (fireRate);
+		Debug.Log ("firerate = " + fireRate);
 	}
 
 	public void changeDamage(int extraDamage){
 		damage += extraDamage;
-		Debug.Log (damage);
+		Debug.Log ("Damage = " + damage);
 	}
 
 	public void addHealth(int extraHealth){
 		health += extraHealth;
-		Debug.Log (health);
+		Debug.Log ("Health = " + health);
 	}
 
 }

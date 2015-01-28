@@ -32,6 +32,8 @@ public class BulletScript : MonoBehaviour
 
 		if(coll.CompareTag("zombie")){
 			//Debug.Log("trigger collision");
+
+			//TODO fix recoil translation!
 			coll.transform.Translate(zombieRecoil * gameObject.rigidbody2D.velocity.x, 
 			                         zombieRecoil * gameObject.rigidbody2D.velocity.y, 
 			                         0);

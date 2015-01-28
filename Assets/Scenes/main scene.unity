@@ -615,7 +615,6 @@ GameObject:
   - 60: {fileID: 961567061}
   - 114: {fileID: 961567059}
   - 95: {fileID: 961567060}
-  - 132: {fileID: 961567064}
   m_Layer: 9
   m_Name: PowerUp
   m_TagString: powerUp
@@ -634,7 +633,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29e873c6ff31f8145b81e865ba1b988d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guiText: {fileID: 961567064}
+  popUp: {fileID: 100000, guid: d492ccb9cbb99f84c89c1eb7a5b637b7, type: 2}
 --- !u!95 &961567060
 Animator:
   serializedVersion: 3
@@ -723,29 +722,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
---- !u!132 &961567064
-GUIText:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 961567058}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Text: 
-  m_Anchor: 4
-  m_Alignment: 1
-  m_PixelOffset: {x: 0, y: 0}
-  m_LineSpacing: 1
-  m_TabSize: 4
-  m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-  m_Material: {fileID: 0}
-  m_FontSize: 20
-  m_FontStyle: 0
-  m_Color:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_PixelCorrect: 1
-  m_RichText: 1
 --- !u!1 &1157892969
 GameObject:
   m_ObjectHideFlags: 0
@@ -796,7 +772,6 @@ MonoBehaviour:
   damage: 34
   heart: {fileID: 2800000, guid: 632651d85584c6f4496f30c980d8e114, type: 3}
   score: 0
-  guiText: {fileID: 1157892978}
 --- !u!212 &1157892971
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -976,9 +951,9 @@ GUIText:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1157892969}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
-  m_Text: 
+  m_Text: Test
   m_Anchor: 4
   m_Alignment: 1
   m_PixelOffset: {x: 0, y: 0}

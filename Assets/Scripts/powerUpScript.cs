@@ -4,18 +4,21 @@ using System.Collections;
 public class powerUpScript : MonoBehaviour {
 	private bool justOnce = true;
 	private GameObject player;
-	public GUIText guiText;
+	//public GUIText guiText;
+
+	public GameObject popUp;
 
 	// Use this for initialization
 	void Start () {
 		player = GameObject.Find ("Player");
-		guiText.pixelOffset = new Vector2 (300, 200);//new Vector2(transform.position.x,transform.position.y);
-
+		//popUp = GameObject.Find("GUIPopUp");
+		//guiText.pixelOffset = new Vector2 (0, 0);//new Vector2(transform.position.x,transform.position.y);
+		//guiText.text = "Testing";
 	}
 
 	void OnGUI(){
-		guiText.text = "Testing";
-		guiText.pixelOffset = new Vector2 (300, 200);
+
+
 	}
 
 	// Update is called once per frame
@@ -28,6 +31,8 @@ public class powerUpScript : MonoBehaviour {
 			//moet maar 1 x gebeuren
 			if(justOnce){
 				justOnce = false;
+				GameObject PopUp = (GameObject)Instantiate(popUp);
+				PopUp.GetComponent<GUIPopUp>().setText("powerup!");
 				//kies random of er damage bijkomt of fireRate omhoog gaat
 				float i = Random.Range(0,3f);
 				if(i <= 1f){
