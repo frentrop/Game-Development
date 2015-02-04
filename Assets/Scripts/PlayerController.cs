@@ -243,25 +243,25 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 	}
-
+	//reload level
 	void ReloadLevel(){
 		Application.LoadLevel(Application.loadedLevel);
 	}
-
+	//add points to score, called from other scripts
 	public void addScore(int points){
 		score += points;
 	}
-
+	//change fire rate of weapon, thanks, Power Up
 	public void changeFireRate(float faster){
 		fireRate -= faster;
 		Debug.Log ("firerate = " + fireRate);
 	}
-
+	//do extra damage, thanks, Power Up
 	public void changeDamage(int extraDamage){
 		damage += extraDamage;
 		Debug.Log ("Damage = " + damage);
 	}
-
+	//get extra life, thanks, Power Up
 	public void addHealth(int extraHealth){
 		health += extraHealth;
 		Debug.Log ("Health = " + health);

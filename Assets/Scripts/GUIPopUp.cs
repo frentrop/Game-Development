@@ -35,13 +35,14 @@ public class GUIPopUp : MonoBehaviour {
 			//change color between colorStart and colorEnd, according to lerp
 			popUp.material.color = Color.Lerp(colorStart, colorEnd, lerp);
 		}
+		//if pop up is present longer than duration and beforeFade, destroy it
 		if(time >= beforeFade + duration){
 			Destroy(gameObject);
 		}
 	}
 
+	//set the text of the pop up
 	public void setText(string displayText){
 		popUp.text = displayText;
 	}
-	
 }

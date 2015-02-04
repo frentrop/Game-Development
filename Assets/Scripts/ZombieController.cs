@@ -3,28 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class ZombieController : MonoBehaviour {
-
+	//zombie movement
 	public float moveSpeed;
 	public float turnSpeed;
-
 	private Vector3 moveDirection;
-
+	//colliders
 	[SerializeField]
 	private PolygonCollider2D[] colliders;
 	private int currentColliderIndex = 0;
-
+	//invincibility
 	private float timeSpentInvincible;
-
 	public int health = 100;
-
+	//TODO audio
 	public AudioClip enemyContactSound;
 	public AudioClip catContactSound;
-
 	//player, angle of zombie to face player, vector pos of player
 	public GameObject player;
 	private float zombieAngle;
 	private Vector3 targetPos;
-
+	//start and environment variables
 	bool startup;
 	private GameObject background;
 	private float boundMaxX, boundMinX, boundMaxY, boundMinY;
@@ -35,10 +32,13 @@ public class ZombieController : MonoBehaviour {
 		player = GameObject.Find ("Player");
 		//find gameobject for background
 		background = GameObject.Find ("background");
+		//find proper alignment of vector
 		moveDirection = Vector3.right;
+		//zombie speeds
 		turnSpeed = 2f;
 		moveSpeed = 0.75f;
 		startup = true;
+		//boundaries
 		boundMaxX = background.renderer.bounds.max.x;
 		boundMinX = background.renderer.bounds.min.x;
 		boundMaxY = background.renderer.bounds.max.y;
@@ -47,7 +47,6 @@ public class ZombieController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
 		//get current zombie position
 		Vector3 currentPos = transform.position;
 		//find position of player (target)
@@ -60,7 +59,8 @@ public class ZombieController : MonoBehaviour {
 			//if still in startup, move towards center first
 			moveDirection = new Vector3(0,0,0) - currentPos;
 			//and check if zombie is in playable field
-			if( (Mathf.Clamp(currentPos.x, boundMinX, boundMaxX) == currentPos.x) && (Mathf.Clamp(currentPos.y, boundMinY, boundMaxY) == currentPos.y) ){
+			if( (Mathf.Clamp(currentPos.x, boundMinX, boundMaxX) == currentPos.x) && 
+			    (Mathf.Clamp(currentPos.y, boundMinY, boundMaxY) == currentPos.y) ){
 				//if zombie is in playable field, it is no longer in startup mode and should go find BRAAAIINS! 
 				startup = false;
 			}
@@ -82,36 +82,30 @@ public class ZombieController : MonoBehaviour {
 		transform.rotation = Quaternion.Slerp (transform.rotation, 
 		                                      Quaternion.Euler (0, 0, zombieAngle),
 		                                      turnSpeed * Time.deltaTime);
-
-
 	}
-
+	//set proper collider
 	public void SetColliderForSprite(int spriteNum){
 		colliders[currentColliderIndex].enabled = false;
 		currentColliderIndex = spriteNum;
 		colliders[currentColliderIndex].enabled = true;
 	}
-
-	void OnTriggerEnter2D(Collider2D other){
-
-	}
-
+	//zombie is hit, can be called from other scripts
 	public void isHit(int damage){
-		//Debug.Log("hit!");
+		//do damage
 		health -= damage;
-
+		//still alive?
 		if(health <= 0){
-			//Debug.Log("Die zombie, die!");
+			//He's dead, Jim, add score, destroy zombie and let level check for other zombies
 			GameObject.Find ("Player").GetComponent<PlayerController>().addScore(50);
 			Destroy(gameObject);
 			GameObject.Find ("background").GetComponent<SpawnScript>().checkZombies();
 		}else{
+			//still alive. Well... Sort of...
 			GameObject.Find("Player").GetComponent<PlayerController>().addScore(25);
 		}
 	}
-
-	public void healt(int extraHealth){
+	//give zombies extra health
+	public void addHealth(int extraHealth){
 		health += extraHealth;
 	}
-
 }
