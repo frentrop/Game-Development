@@ -13,17 +13,23 @@ public class SpawnScript : MonoBehaviour {
 	Vector3 north,east,south,west;
 
 	//power up spawn time
-	public float minSpawnTime = 0.75f;
-	public float maxSpawnTime = 2f;
+	public float minSpawnTime = 10f;
+	public float maxSpawnTime = 40f;
+
+	public GameObject powerUpPrefab;
+
+	public GameObject popUp;
 
 	// Use this for initialization
 	void Start () {
-		//zombie = GameObject.Find ("zombie");
+		GameObject PopUp = (GameObject)Instantiate(popUp);
+		PopUp.GetComponent<GUIPopUp>().setText("New Game!");
 		north = new Vector3 (0f, renderer.bounds.max.y + 1f, 0f);
 		south = new Vector3 (0f, renderer.bounds.min.y - 1f, 0f);
 		east = new Vector3 (renderer.bounds.max.x + 1f, 0f, 0f);
 		west = new Vector3 (renderer.bounds.min.x - 1f, 0f, 0f);
 		newWave (0);
+		Invoke ("powerSpawn",maxSpawnTime);
 	}
 	
 	// Update is called once per frame
@@ -32,6 +38,8 @@ public class SpawnScript : MonoBehaviour {
 		if (zombieCheck) {
 			if (UnityEngine.GameObject.FindWithTag ("zombie") == null) {
 					Debug.Log ("No zombies, new wave!");
+					GameObject PopUp = (GameObject)Instantiate(popUp);
+					PopUp.GetComponent<GUIPopUp>().setText("New Wave!");
 					newWave (1);
 			}
 			zombieCheck = false;
@@ -56,6 +64,7 @@ public class SpawnScript : MonoBehaviour {
 	}
 
 	void powerSpawn(){
+		Instantiate(powerUpPrefab);
 		Invoke ("powerSpawn", Random.Range (minSpawnTime, maxSpawnTime));
 	}
 

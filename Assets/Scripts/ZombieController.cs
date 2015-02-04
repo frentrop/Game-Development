@@ -21,7 +21,7 @@ public class ZombieController : MonoBehaviour {
 	public AudioClip catContactSound;
 
 	//player, angle of zombie to face player, vector pos of player
-	private GameObject player;
+	public GameObject player;
 	private float zombieAngle;
 	private Vector3 targetPos;
 

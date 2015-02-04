@@ -26,28 +26,38 @@ public class PlayerController : MonoBehaviour {
 	public float fireRate = 0.5f;
 	private float nextFire = 0.0f;
 	public float bulletSpeed = 12.0f;
-
+	//damage of the gun
 	public int damage = 34;
-
+	//health of player + texture of hearts
 	private int health = 5;
 	public Texture2D heart;
-
+	//score of the player
 	public int score = 0;
-
+	//variables related to invincibility (when player is hit)
 	private bool isInvincible = false;
 	private float timeSpentInvincible;
+	//boundaries of map
 	private float boundMinX, boundMaxX, boundMinY, boundMaxY;
-	//public GUIText guiText;
 
+	//used for pause menu
+	private bool pause = false;
+	public float width;// = Screen.width;
+	public float height;// = Screen.height;
+	public Rect windowRect;// = new Rect(width/3, height/3, width/3, height/3);
+	//fontsize of GUI objects
 	int fontSize = 200;
 
 	void Start(){
+		Time.timeScale = 1;
 		boundMinX = background.renderer.bounds.min.x;
 		boundMaxX = background.renderer.bounds.max.x;
 		boundMinY = background.renderer.bounds.min.y;
 		boundMaxY = background.renderer.bounds.max.y;
 		rigidbody2D.drag = 50;
-		//guiText.pixelOffset = new Vector2(378, 170);
+
+		width = Screen.width;
+		height = Screen.height;
+		windowRect = new Rect(width/4, height/4, width/2, height/2);
 	}
 
 	void OnGUI(){
@@ -62,7 +72,7 @@ public class PlayerController : MonoBehaviour {
 		GUILayout.EndHorizontal();
 		GUILayout.EndArea();
 
-		GUI.Label( new Rect (Screen.width - 100, 0, 100, 64), "<size=60><b>" + score.ToString() + "</b></size>");
+		GUI.Label( new Rect (Screen.width - 150, 0, 150, 64), "<size=60><b>" + score.ToString() + "</b></size>");
 		//if health is below 0, display game over
 		if(health <= 0){
 			float w = 0.7f;
@@ -78,10 +88,35 @@ public class PlayerController : MonoBehaviour {
 			                                        Mathf.FloorToInt(Screen.height * fontSize/1000));
 			GUI.Label( gameOverRect, "<b><color=red>Game over!</color></b>", gameOverTextStyle);
 		}
+		GUIStyle pauseStyle = new GUIStyle("button");
+		pauseStyle.alignment = TextAnchor.MiddleCenter;
+		pauseStyle.fontSize = 40;
+		if(GUI.Button(new Rect(2 * width/3, 0, 100, 100), "<b>II</b>", pauseStyle )){
+			if(!pause){
+				Time.timeScale = 0;
+				pause = true;
+			}
+		}
 
-		// guiText.text = "TEST";
+		if(pause){
+			GUIStyle menuStyle = new GUIStyle("window");
+			menuStyle.fontSize = Mathf.Min(Mathf.FloorToInt(width/3 * fontSize/1000), 
+			                               Mathf.FloorToInt(height/3 * fontSize/1000));
+			menuStyle.stretchHeight = true;
+			windowRect = GUI.ModalWindow(0, windowRect, MenuWindow, "Menu", menuStyle);
+		}
 
+	}
 
+	void MenuWindow(int windowID){
+		if(GUI.Button(new Rect(width/12, height/6 - 30, width/3, 60), "<size=30>Resume</size>")){
+			pause = false;
+			Time.timeScale = 1;
+		}else if (GUI.Button(new Rect(width/12, height/4 - 30, width/3, 60), "<size=30>Restart</size>")){
+			Application.LoadLevel("main scene");
+		}else if (GUI.Button(new Rect(width/12, height/3 - 30, width/3, 60), "<size=30>Return to home</size>")){
+			print ("home");
+		}
 	}
 	
 	// Update is called once per frame
@@ -171,7 +206,8 @@ public class PlayerController : MonoBehaviour {
 			nextFire = Time.time + fireRate;
 			//create new clone of bullet with proper position and rotation
 			GameObject currentBullet = (GameObject)Instantiate(Bullet, 
-			                                                   new Vector2(Gun.rigidbody2D.position.x, Gun.rigidbody2D.position.y), 
+			                                                   new Vector2(Gun.rigidbody2D.position.x, 
+			            												    Gun.rigidbody2D.position.y), 
 			                                                   Quaternion.identity);
 			//set damage of bullet
 			currentBullet.GetComponent<BulletScript>().setDamage(damage);

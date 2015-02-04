@@ -12,7 +12,7 @@ GameObject:
   - 114: {fileID: 11400000}
   m_Layer: 5
   m_Name: GUIPopUp
-  m_TagString: Untagged
+  m_TagString: powerUp
   m_Icon: {fileID: 266726316, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24,7 +24,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .5, y: .25, z: 0}
+  m_LocalPosition: {x: .5, y: .200000003, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -43,7 +43,7 @@ MonoBehaviour:
   popUp: {fileID: 13200000}
   colorStart: {r: 1, g: 1, b: 1, a: 1}
   colorEnd: {r: 0, g: 0, b: 0, a: 0}
-  beforeFade: 2.5
+  beforeFade: 2
   duration: 4
 --- !u!132 &13200000
 GUIText:
@@ -61,7 +61,7 @@ GUIText:
   m_TabSize: 5
   m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   m_Material: {fileID: 0}
-  m_FontSize: 40
+  m_FontSize: 50
   m_FontStyle: 0
   m_Color:
     serializedVersion: 2
