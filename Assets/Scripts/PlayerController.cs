@@ -103,11 +103,12 @@ public class PlayerController : MonoBehaviour {
 			menuStyle.fontSize = Mathf.Min(Mathf.FloorToInt(width/3 * fontSize/1000), 
 			                               Mathf.FloorToInt(height/3 * fontSize/1000));
 			menuStyle.stretchHeight = true;
+			menuStyle.alignment = TextAnchor.MiddleCenter;
 			windowRect = GUI.ModalWindow(0, windowRect, MenuWindow, "Menu", menuStyle);
 		}
 
 	}
-
+	//menu window buttons
 	void MenuWindow(int windowID){
 		if(GUI.Button(new Rect(width/12, height/6 - 30, width/3, 60), "<size=30>Resume</size>")){
 			pause = false;
