@@ -29,7 +29,7 @@ public class ZombieController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//find gameobject for player
-		player = GameObject.Find ("Player");
+		player = GameObject.FindWithTag("Player");
 		//find gameobject for background
 		background = GameObject.Find ("background");
 		//find proper alignment of vector
