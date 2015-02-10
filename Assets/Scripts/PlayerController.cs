@@ -103,20 +103,28 @@ public class PlayerController : MonoBehaviour {
 			menuStyle.fontSize = Mathf.Min(Mathf.FloorToInt(width/3 * fontSize/1000), 
 			                               Mathf.FloorToInt(height/3 * fontSize/1000));
 			menuStyle.stretchHeight = true;
-			menuStyle.alignment = TextAnchor.MiddleCenter;
+			menuStyle.alignment = TextAnchor.UpperCenter;
 			windowRect = GUI.ModalWindow(0, windowRect, MenuWindow, "Menu", menuStyle);
 		}
 
 	}
 	//menu window buttons
 	void MenuWindow(int windowID){
-		if(GUI.Button(new Rect(width/12, height/6 - 30, width/3, 60), "<size=30>Resume</size>")){
+		//adding style to button
+		GUIStyle buttonStyle = new GUIStyle("button");
+		//center both horizontally and vertically
+		buttonStyle.alignment = TextAnchor.MiddleCenter;
+		//fontsize depends on screen size
+		buttonStyle.fontSize = Mathf.Min(Mathf.FloorToInt(width/3 * fontSize/1000), 
+		                                 Mathf.FloorToInt(height/3 * fontSize/1000));
+		//menu buttons
+		if(GUI.Button(new Rect(width/12, height/6 - 60, width/3, 100), "Resume", buttonStyle)){
 			pause = false;
 			Time.timeScale = 1;
-		}else if (GUI.Button(new Rect(width/12, height/4 - 30, width/3, 60), "<size=30>Restart</size>")){
+		}else if (GUI.Button(new Rect(width/12, height/4 - 30, width/3, 100), "Restart", buttonStyle)){
 			Application.LoadLevel("main scene");
-		}else if (GUI.Button(new Rect(width/12, height/3 - 30, width/3, 60), "<size=30>Return to home</size>")){
-			print ("home");
+		}else if (GUI.Button(new Rect(width/12, height/3, width/3, 100), "Return to home", buttonStyle)){
+			Application.LoadLevel("home scene");
 		}
 	}
 	
