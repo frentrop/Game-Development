@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour {
 		GUILayout.EndHorizontal();
 		GUILayout.EndArea();
 
-		GUI.Label( new Rect (Screen.width - 150, 0, 150, 64), "<size=60><b>" + score.ToString() + "</b></size>");
+		GUI.Label( new Rect (Screen.width - 250, 0, 250, 64), "<size=60><b>" + score.ToString() + "</b></size>");
 		//if health is below 0, display game over
 		if(health <= 0){
 			float w = 0.7f;

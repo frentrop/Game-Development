@@ -102,8 +102,9 @@ public class ZombieController : MonoBehaviour {
 			GameObject.Find("Player").GetComponent<PlayerController>().addScore(25);
 		}
 	}
-	//give zombies extra health
-	public void addHealth(int extraHealth){
+	//improve zombies according to SpawnScript
+	public void improveZombie(int extraHealth, float extraSpeed){
 		health += extraHealth;
+		moveSpeed += extraSpeed;
 	}
 }

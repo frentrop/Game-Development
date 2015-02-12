@@ -5,6 +5,8 @@ public class SpawnScript : MonoBehaviour {
 	//zombie prefab
 	public GameObject zombie, player;
 	public int numZombies = 1;
+	public int extraHealth = 0;
+	public float extraSpeed = 0;
 	//control boolean for checking zombies
 	private bool zombieCheck = false;
 	//spawnPoints zombie
@@ -70,10 +72,19 @@ public class SpawnScript : MonoBehaviour {
 		numZombies += extraZombies;
 		//spawn zombies in all spawn points
 		for (int i = 0; i < numZombies; i++) {
-			Instantiate(zombie,north + new Vector3(Random.Range (-2f, 2f),Random.Range (-1f, 5f),0),Quaternion.identity);
-			Instantiate(zombie,south + new Vector3(Random.Range (-2f, 2f),Random.Range (-5f, 1f),0),Quaternion.identity);
-			Instantiate(zombie,east + new Vector3(Random.Range (-1f, 5f),Random.Range (-2.3f, 2.3f),0),Quaternion.identity);
-			Instantiate(zombie,west + new Vector3(Random.Range (-5f, 1f),Random.Range(-2.3f,2.3f),0),Quaternion.identity);
+			GameObject north = Instantiate(zombie,
+			            				   north + new Vector3(Random.Range (-2f, 2f),Random.Range (-1f, 5f),0),
+			            				   Quaternion.identity);
+			north.GetComponent<ZombieController>().improveZombie(extraHealth, extraSpeed);
+			Instantiate(zombie,
+			            south + new Vector3(Random.Range (-2f, 2f),Random.Range (-5f, 1f),0),
+			            Quaternion.identity);
+			Instantiate(zombie,
+			            east + new Vector3(Random.Range (-1f, 5f),Random.Range (-2.3f, 2.3f),0),
+			            Quaternion.identity);
+			Instantiate(zombie,
+			            west + new Vector3(Random.Range (-5f, 1f),Random.Range(-2.3f,2.3f),0),
+			            Quaternion.identity);
 		}
 	}
 
@@ -89,5 +100,6 @@ public class SpawnScript : MonoBehaviour {
 		Invoke ("powerSpawn", Random.Range (minSpawnTime, maxSpawnTime));
 	}
 
-	//TODO check score, and give zombies more health if score gets higher
+	//TODO check score, and give zombies more health or speed if score gets higher
+
 }
