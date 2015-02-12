@@ -8,17 +8,16 @@ public class ZombieController : MonoBehaviour {
 	public float turnSpeed;
 	private Vector3 moveDirection;
 	//colliders
-	[SerializeField]
-	private PolygonCollider2D[] colliders;
-	private int currentColliderIndex = 0;
+//	[SerializeField]
+//	private PolygonCollider2D[] colliders;
+//	private int currentColliderIndex = 0;
 	//invincibility
 	private float timeSpentInvincible;
 	public int health = 100;
 	//TODO audio
 	public AudioClip enemyContactSound;
 	public AudioClip catContactSound;
-	//player, angle of zombie to face player, vector pos of player
-	public GameObject player;
+	//angle of zombie to face player, vector pos of player
 	private float zombieAngle;
 	private Vector3 targetPos;
 	//start and environment variables
@@ -28,10 +27,8 @@ public class ZombieController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//find gameobject for player
-		player = GameObject.FindWithTag("Player");
 		//find gameobject for background
-		background = GameObject.Find ("background");
+		background = GameObject.FindWithTag ("background");
 		//find proper alignment of vector
 		moveDirection = Vector3.right;
 		//zombie speeds
@@ -39,18 +36,19 @@ public class ZombieController : MonoBehaviour {
 		moveSpeed = 0.75f;
 		startup = true;
 		//boundaries
-		boundMaxX = background.renderer.bounds.max.x;
-		boundMinX = background.renderer.bounds.min.x;
-		boundMaxY = background.renderer.bounds.max.y;
-		boundMinY = background.renderer.bounds.min.y;
+		background.GetComponent<SpawnScript>().backgroundBounds(out boundMinX, 
+		                                                        out boundMaxX, 
+		                                                        out boundMinY, 
+		                                                        out boundMaxY);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		//get current zombie position
 		Vector3 currentPos = transform.position;
-		//find position of player (target)
-		targetPos = player.transform.position;
+		//find position of player (targetPos), 
+		//done by getting it from SpawnScript (Better performance when zombies are spawned than GameObject.Find())
+		background.GetComponent<SpawnScript>().playerPos(out targetPos);
 		//find direction to target
 		moveDirection = targetPos - currentPos;
 
@@ -84,11 +82,11 @@ public class ZombieController : MonoBehaviour {
 		                                      turnSpeed * Time.deltaTime);
 	}
 	//set proper collider
-	public void SetColliderForSprite(int spriteNum){
-		colliders[currentColliderIndex].enabled = false;
-		currentColliderIndex = spriteNum;
-		colliders[currentColliderIndex].enabled = true;
-	}
+//	public void SetColliderForSprite(int spriteNum){
+//		colliders[currentColliderIndex].enabled = false;
+//		currentColliderIndex = spriteNum;
+//		colliders[currentColliderIndex].enabled = true;
+//	}
 	//zombie is hit, can be called from other scripts
 	public void isHit(int damage){
 		//do damage
@@ -98,7 +96,7 @@ public class ZombieController : MonoBehaviour {
 			//He's dead, Jim, add score, destroy zombie and let level check for other zombies
 			GameObject.Find ("Player").GetComponent<PlayerController>().addScore(50);
 			Destroy(gameObject);
-			GameObject.Find ("background").GetComponent<SpawnScript>().checkZombies();
+			background.GetComponent<SpawnScript>().checkZombies();
 		}else{
 			//still alive. Well... Sort of...
 			GameObject.Find("Player").GetComponent<PlayerController>().addScore(25);

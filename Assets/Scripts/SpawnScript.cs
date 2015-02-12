@@ -3,12 +3,13 @@ using System.Collections;
 
 public class SpawnScript : MonoBehaviour {
 	//zombie prefab
-	public GameObject zombie;
+	public GameObject zombie, player;
 	public int numZombies = 1;
 	//control boolean for checking zombies
 	private bool zombieCheck = false;
 	//spawnPoints zombie
 	Vector3 north,east,south,west;
+	float minX, minY, maxX, maxY;
 	//power up spawn time
 	public float minSpawnTime = 10f;
 	public float maxSpawnTime = 40f;
@@ -22,16 +23,31 @@ public class SpawnScript : MonoBehaviour {
 		//create pop up for new game
 		GameObject PopUp = (GameObject)Instantiate(popUp);
 		PopUp.GetComponent<GUIPopUp>().setText("New Game!");
+		player = GameObject.Find("Player");
+		minX = renderer.bounds.min.x;
+		maxX = renderer.bounds.max.x;
+		minY = renderer.bounds.min.y;
+		maxY = renderer.bounds.max.y;
 		//set zombie spawning points
-		north = new Vector3 (0f, renderer.bounds.max.y + 1f, 0f);
-		south = new Vector3 (0f, renderer.bounds.min.y - 1f, 0f);
-		east = new Vector3 (renderer.bounds.max.x + 1f, 0f, 0f);
-		west = new Vector3 (renderer.bounds.min.x - 1f, 0f, 0f);
+		north = new Vector3 (0f, maxY + 1f, 0f);
+		south = new Vector3 (0f, minY - 1f, 0f);
+		east = new Vector3 (maxX + 1f, 0f, 0f);
+		west = new Vector3 (minX - 1f, 0f, 0f);
 		//start waves and power up spawns
 		newWave (0);
 		Invoke ("powerSpawn",maxSpawnTime);
 	}
-	
+	//used to provide other scripts wih position of the player
+	public void playerPos(out Vector3 playerposition){
+		playerposition = player.transform.position;
+	}
+	//used to provide other scripts with boundary values of map
+	public void backgroundBounds(out float minX, out float maxX, out float minY, out float maxY){
+		minX = this.minX;
+		maxX = this.maxX;
+		minY = this.minY;
+		maxY = this.maxY;
+	}	
 	// Update is called once per frame
 	void Update () {
 		//does the level need to be checked for zombies?
@@ -54,10 +70,10 @@ public class SpawnScript : MonoBehaviour {
 		numZombies += extraZombies;
 		//spawn zombies in all spawn points
 		for (int i = 0; i < numZombies; i++) {
-			Instantiate(zombie,north,Quaternion.identity);
-			Instantiate(zombie,south,Quaternion.identity);
-			Instantiate(zombie,east,Quaternion.identity);
-			Instantiate(zombie,west,Quaternion.identity);
+			Instantiate(zombie,north + new Vector3(Random.Range (-2f, 2f),Random.Range (-1f, 5f),0),Quaternion.identity);
+			Instantiate(zombie,south + new Vector3(Random.Range (-2f, 2f),Random.Range (-5f, 1f),0),Quaternion.identity);
+			Instantiate(zombie,east + new Vector3(Random.Range (-1f, 5f),Random.Range (-2.3f, 2.3f),0),Quaternion.identity);
+			Instantiate(zombie,west + new Vector3(Random.Range (-5f, 1f),Random.Range(-2.3f,2.3f),0),Quaternion.identity);
 		}
 	}
 

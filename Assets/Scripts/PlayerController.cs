@@ -49,10 +49,10 @@ public class PlayerController : MonoBehaviour {
 
 	void Start(){
 		Time.timeScale = 1;
-		boundMinX = background.renderer.bounds.min.x;
-		boundMaxX = background.renderer.bounds.max.x;
-		boundMinY = background.renderer.bounds.min.y;
-		boundMaxY = background.renderer.bounds.max.y;
+		background.GetComponent<SpawnScript>().backgroundBounds(out boundMinX, 
+		                                                        out boundMaxX, 
+		                                                        out boundMinY, 
+		                                                        out boundMaxY);
 		rigidbody2D.drag = 50;
 
 		width = Screen.width;
@@ -238,6 +238,8 @@ public class PlayerController : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D coll){ //was OnTriggerEnter2D
 		//if collided with zombie and player is not invincible
 		if(coll.CompareTag("zombie") && !isInvincible){
+			//Vibrate device
+			Handheld.Vibrate();
 			//make invincible
 			isInvincible = true;
 			//control variable for invincibility 
@@ -254,7 +256,7 @@ public class PlayerController : MonoBehaviour {
 	}
 	//reload level
 	void ReloadLevel(){
-		Application.LoadLevel(Application.loadedLevel);
+		Application.LoadLevel("home scene");
 	}
 	//add points to score, called from other scripts
 	public void addScore(int points){

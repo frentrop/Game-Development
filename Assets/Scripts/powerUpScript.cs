@@ -23,13 +23,13 @@ public class powerUpScript : MonoBehaviour {
 		player = GameObject.Find ("Player");
 		//find background to specify the boundaries in which the power up must remain
 		background = GameObject.Find ("background");
-		boundMaxX = background.renderer.bounds.max.x - 2.4f;
-		boundMinX = background.renderer.bounds.min.x + 2.5f;
-		boundMaxY = background.renderer.bounds.max.y - 2.65f;
-		boundMinY = background.renderer.bounds.min.y + 2.5f;
+		background.GetComponent<SpawnScript>().backgroundBounds(out boundMinX, 
+		                                                        out boundMaxX, 
+		                                                        out boundMinY, 
+		                                                        out boundMaxY);
 		//give power up random position on map
-		transform.position = new Vector3(Random.Range(boundMinX,boundMaxX),
-		                                 Random.Range (boundMinY,boundMaxY));
+		transform.position = new Vector3(Random.Range(boundMinX + 2.5f,boundMaxX - 2.4f),
+		                                 Random.Range (boundMinY + 2.5f,boundMaxY - 2.65f));
 	}
 
 	// Update is called once per frame

@@ -272,7 +272,7 @@ GameObject:
   - 114: {fileID: 692816223}
   m_Layer: 0
   m_Name: background
-  m_TagString: Untagged
+  m_TagString: background
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -323,6 +323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zombie: {fileID: 100000, guid: 8dc218112d78cad4fb3d98fe8c2715d5, type: 2}
+  player: {fileID: 0}
   numZombies: 1
   minSpawnTime: 10
   maxSpawnTime: 40
