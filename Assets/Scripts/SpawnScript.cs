@@ -70,12 +70,13 @@ public class SpawnScript : MonoBehaviour {
 	public void newWave(int extraZombies){
 		//It's aliiiiveeee!!!
 		numZombies += extraZombies;
+		//TODO check score en hoeveel extra health zombies moeten krijgen
 		//spawn zombies in all spawn points
 		for (int i = 0; i < numZombies; i++) {
-			GameObject north = Instantiate(zombie,
+			GameObject North = (GameObject)Instantiate(zombie,
 			            				   north + new Vector3(Random.Range (-2f, 2f),Random.Range (-1f, 5f),0),
 			            				   Quaternion.identity);
-			north.GetComponent<ZombieController>().improveZombie(extraHealth, extraSpeed);
+			North.GetComponent<ZombieController>().improveZombie(extraHealth, extraSpeed);
 			Instantiate(zombie,
 			            south + new Vector3(Random.Range (-2f, 2f),Random.Range (-5f, 1f),0),
 			            Quaternion.identity);
