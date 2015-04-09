@@ -81,12 +81,14 @@ public class ZombieController : MonoBehaviour {
 		                                      Quaternion.Euler (0, 0, zombieAngle),
 		                                      turnSpeed * Time.deltaTime);
 	}
-	//set proper collider
-//	public void SetColliderForSprite(int spriteNum){
-//		colliders[currentColliderIndex].enabled = false;
-//		currentColliderIndex = spriteNum;
-//		colliders[currentColliderIndex].enabled = true;
-//	}
+/*Removed because it causes enormous performance issues with mobile devices, using simpler colliders instead
+	set proper collider
+	public void SetColliderForSprite(int spriteNum){
+		colliders[currentColliderIndex].enabled = false;
+		currentColliderIndex = spriteNum;
+		colliders[currentColliderIndex].enabled = true;
+	}
+*/
 	//zombie is hit, can be called from other scripts
 	public void isHit(int damage){
 		//do damage
@@ -98,7 +100,7 @@ public class ZombieController : MonoBehaviour {
 			Destroy(gameObject);
 			background.GetComponent<SpawnScript>().checkZombies();
 		}else{
-			//still alive. Well... Sort of...
+			//still alive. Well... as alive as zombies can be...
 			GameObject.Find("Player").GetComponent<PlayerController>().addScore(25);
 		}
 	}
