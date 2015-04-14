@@ -48,62 +48,73 @@ public class PlayerController : MonoBehaviour {
 	int fontSize = 200;
 
 	void Start(){
+		//sets speed of in-game time to 1
 		Time.timeScale = 1;
+		//set map boundaries
 		background.GetComponent<SpawnScript>().backgroundBounds(out boundMinX, 
 		                                                        out boundMaxX, 
 		                                                        out boundMinY, 
 		                                                        out boundMaxY);
 		rigidbody2D.drag = 50;
-
 		width = Screen.width;
 		height = Screen.height;
 		windowRect = new Rect(width/4, height/4, width/2, height/2);
 	}
-
+	//GUI drawing
 	void OnGUI(){
+		//display health
 		Rect r = new Rect(0,0, Screen.width, 96);
 		GUILayout.BeginArea(r);
 		GUILayout.BeginHorizontal();
-
+		//display hearts depending on amount of health
 		for(int i = 0; i < health; i++)
 			GUILayout.Label(heart); //assign your heart image to this texture
-		
 		GUILayout.FlexibleSpace();
 		GUILayout.EndHorizontal();
 		GUILayout.EndArea();
-
+		//Display score in new rect
 		GUI.Label( new Rect (Screen.width - 250, 0, 250, 64), "<size=60><b>" + score.ToString() + "</b></size>");
 		//if health is below 0, display game over
 		if(health <= 0){
+			//percentage of screen used for this rect
 			float w = 0.7f;
 			float h = 0.5f;
 			Rect gameOverRect = new Rect();
+			//This way of picking rect values is done to scale it according to screen size
 			gameOverRect.x = (Screen.width*(1-w))/2;
 			gameOverRect.y = (Screen.height*(1-h))/2;
 			gameOverRect.width = Screen.width*w;
 			gameOverRect.height = Screen.height*h;
+			//give text a style to align it and give it proper fontsize
 			GUIStyle gameOverTextStyle = new GUIStyle("label");
 			gameOverTextStyle.alignment = TextAnchor.MiddleCenter;
 			gameOverTextStyle.fontSize =  Mathf.Min(Mathf.FloorToInt(Screen.width * fontSize/1000), 
 			                                        Mathf.FloorToInt(Screen.height * fontSize/1000));
+			//display game over in gameOverRect with predefined style
 			GUI.Label( gameOverRect, "<b><color=red>Game over!</color></b>", gameOverTextStyle);
 		}
+		//create style for pause button
 		GUIStyle pauseStyle = new GUIStyle("button");
 		pauseStyle.alignment = TextAnchor.MiddleCenter;
 		pauseStyle.fontSize = 40;
+		//if pause button is pressed
 		if(GUI.Button(new Rect(2 * width/3, 0, 100, 100), "<b>II</b>", pauseStyle )){
+			//and game was not paused
 			if(!pause){
+				//in-game time stops and control boolean pause = true
 				Time.timeScale = 0;
 				pause = true;
 			}
 		}
-
+		//if game is paused
 		if(pause){
+			//create style for menu window
 			GUIStyle menuStyle = new GUIStyle("window");
 			menuStyle.fontSize = Mathf.Min(Mathf.FloorToInt(width/3 * fontSize/1000), 
 			                               Mathf.FloorToInt(height/3 * fontSize/1000));
 			menuStyle.stretchHeight = true;
 			menuStyle.alignment = TextAnchor.UpperCenter;
+			//create modal window for menu (is created in function MenuWindow) with title Menu
 			windowRect = GUI.ModalWindow(0, windowRect, MenuWindow, "Menu", menuStyle);
 		}
 
@@ -119,11 +130,14 @@ public class PlayerController : MonoBehaviour {
 		                                 Mathf.FloorToInt(height/3 * fontSize/1000));
 		//menu buttons
 		if(GUI.Button(new Rect(width/12, height/6 - 60, width/3, 100), "Resume", buttonStyle)){
+			//if Resume is clicked, control bool pause = false, in-game time speed will be normal
 			pause = false;
 			Time.timeScale = 1;
 		}else if (GUI.Button(new Rect(width/12, height/4 - 30, width/3, 100), "Restart", buttonStyle)){
+			//if restart, restart the game level
 			Application.LoadLevel("main scene");
 		}else if (GUI.Button(new Rect(width/12, height/3, width/3, 100), "Return to home", buttonStyle)){
+			//if return to home, load the start screen
 			Application.LoadLevel("home scene");
 		}
 	}
@@ -151,14 +165,17 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 		else {
+			//get keyboard input
 			h = Input.GetAxis("Horizontal");
 			v = Input.GetAxis("Vertical");
 		}
 
 		//set animation parameters for player animations
 		if(Mathf.Abs(h) > 0.01 || Mathf.Abs(v) > 0.01){
+			//if player is moving, start move-animation
 			gameObject.GetComponent<Animator>().SetBool("moving", true);
 		}else {
+			//if player is not moving, stop move-animation
 			gameObject.GetComponent<Animator>().SetBool("moving", false);
 		}
 		
@@ -171,6 +188,7 @@ public class PlayerController : MonoBehaviour {
 			}else if(transform.position.x < boundMinX + 0.75f){
 				h = Mathf.Clamp(h, 0.5f, 1);
 			}
+			//apply velocity
 			rigidbody2D.velocity = new Vector2(h * speed, rigidbody2D.velocity.y);
 		}
 		
@@ -183,8 +201,10 @@ public class PlayerController : MonoBehaviour {
 			}else if(transform.position.y < boundMinY + 0.75f){
 				v = Mathf.Clamp(v, 0.5f, 1);
 			}
+			//apply velocity
 			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, v * speed);
 		}
+		//rotate player to either firing direction (if firing weapon) or moving direction
 		rigidbody2D.MoveRotation(playerAngle);
 
 		//if invincible, let renderer blink
@@ -235,7 +255,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	//if trigger collision is... triggered ;)
-	void OnTriggerEnter2D(Collider2D coll){ //was OnTriggerEnter2D
+	void OnTriggerEnter2D(Collider2D coll){ 
 		//if collided with zombie and player is not invincible
 		if(coll.CompareTag("zombie") && !isInvincible){
 			//Vibrate device

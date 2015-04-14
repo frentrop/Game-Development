@@ -25,6 +25,7 @@ public class BulletScript : MonoBehaviour{
 		if(coll.CompareTag("zombie")){
 			//add recoil to hit zombie
 			//TODO fix recoil translation!
+			//bullet is given a force, maybe that creates the problem of wrong translation
 			coll.transform.Translate(zombieRecoil * gameObject.rigidbody2D.velocity.x, 
 			                         zombieRecoil * gameObject.rigidbody2D.velocity.y, 
 			                         0);
