@@ -42,27 +42,28 @@ public class powerUpScript : MonoBehaviour {
 
 	void OnTriggerExit2D(Collider2D coll){
 		if (coll.CompareTag ("Player")) {
+			//TODO sound effect for power up
 			//moet maar 1 x gebeuren
 			if(justOnce){
 				justOnce = false;
-				//kies random of er damage bijkomt of fireRate omhoog gaat
+				//kies random of er damage bijkomt, leven bijkomt of fireRate omhoog gaat
 				float i = Random.Range(0,3f);
 				if(i <= 1f){
-					//add more damage to weapon player
-					player.GetComponent<PlayerController>().changeDamage(10);
-					//pop up with what power up it was
+					//extra health
+					player.GetComponent<PlayerController>().addHealth(1);
 					GameObject PopUp = (GameObject)Instantiate(popUp);
-					PopUp.GetComponent<GUIPopUp>().setText("Weapon will do extra damage!");
+					PopUp.GetComponent<GUIPopUp>().setText("Extra life!");
 				}else if(i <= 2f){
 					//lower the firerate
 					player.GetComponent<PlayerController>().changeFireRate(0.05f);
 					GameObject PopUp = (GameObject)Instantiate(popUp);
 					PopUp.GetComponent<GUIPopUp>().setText("Weapon will fire quicker!");
 				}else {
-					//extra health
-					player.GetComponent<PlayerController>().addHealth(1);
+					//add more damage to weapon player
+					player.GetComponent<PlayerController>().changeDamage(10);
+					//pop up with what power up it was
 					GameObject PopUp = (GameObject)Instantiate(popUp);
-					PopUp.GetComponent<GUIPopUp>().setText("Extra life!");
+					PopUp.GetComponent<GUIPopUp>().setText("Weapon will do extra damage!");
 				}
 			//if picked up by player, initialize animation for removal
 			gameObject.GetComponent<Animator>().SetBool("removePowerUp",true);

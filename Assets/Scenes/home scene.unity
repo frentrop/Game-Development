@@ -186,6 +186,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c252c02ff59fe8845968ca6876bbf438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sound: {fileID: 2800000, guid: 72c90fb65c549aa49a5bd462ec600591, type: 3}
+  soundMuted: {fileID: 2800000, guid: 873fa73fdbcb3904c92c8cb0e2ef8a85, type: 3}
 --- !u!212 &850026260
 SpriteRenderer:
   m_ObjectHideFlags: 0

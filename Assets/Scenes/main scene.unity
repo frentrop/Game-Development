@@ -271,6 +271,7 @@ GameObject:
   - 212: {fileID: 692816221}
   - 114: {fileID: 692816223}
   - 82: {fileID: 692816224}
+  - 82: {fileID: 692816225}
   m_Layer: 0
   m_Name: background
   m_TagString: background
@@ -333,6 +334,7 @@ MonoBehaviour:
   powerUpPrefab: {fileID: 100000, guid: 88bfbf25c35382b4298249225e855c1b, type: 2}
   popUp: {fileID: 100000, guid: d492ccb9cbb99f84c89c1eb7a5b637b7, type: 2}
   hitZombie: {fileID: 8300000, guid: 637c8c66eb95f944fa7de5ab71f850d7, type: 3}
+  hitWall: {fileID: 8300000, guid: e819b61e6c328f0438cda9d346b8f51b, type: 3}
 --- !u!82 &692816224
 AudioSource:
   m_ObjectHideFlags: 0
@@ -352,6 +354,64 @@ AudioSource:
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+--- !u!82 &692816225
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 692816220}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_audioClip: {fileID: 8300000, guid: e819b61e6c328f0438cda9d346b8f51b, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: .5
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Priority: 255
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: .25999999
   rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
@@ -728,6 +788,8 @@ MonoBehaviour:
     width: 0
     height: 0
   bulletFired: {fileID: 8300000, guid: 2c8eca87d9c898b409b200e59ed2860b, type: 3}
+  sound: {fileID: 2800000, guid: 72c90fb65c549aa49a5bd462ec600591, type: 3}
+  soundMuted: {fileID: 2800000, guid: 873fa73fdbcb3904c92c8cb0e2ef8a85, type: 3}
 --- !u!212 &1157892971
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -917,11 +979,11 @@ AudioSource:
   serializedVersion: 3
   m_audioClip: {fileID: 8300000, guid: 2c8eca87d9c898b409b200e59ed2860b, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: .300000012
+  m_Volume: .200000003
   m_Pitch: .5
   Loop: 0
   Mute: 0
-  Priority: 128
+  Priority: 100
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500

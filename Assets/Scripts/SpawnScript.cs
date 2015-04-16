@@ -19,7 +19,7 @@ public class SpawnScript : MonoBehaviour {
 	public GameObject powerUpPrefab;
 	//pop up prefab
 	public GameObject popUp;
-	public AudioClip hitZombie;
+	public AudioClip hitZombie, hitWall;
 
 	// Use this for initialization
 	void Start () {
@@ -130,7 +130,13 @@ public class SpawnScript : MonoBehaviour {
 	//play sound when zombie is hit. Played here, since sound won't play in ZombieController when it is destroyed
 	public void zombieHit(){
 		if(!audio.isPlaying){
-			audio.Play();
+			audio.volume = 1F;
+			audio.PlayOneShot(hitZombie);
 		}
+	}
+	//play sound when wall is hit
+	public void wallHit(){
+		audio.volume = 0.1F;
+		audio.PlayOneShot(hitWall);
 	}
 }

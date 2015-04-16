@@ -31,8 +31,9 @@ public class BulletScript : MonoBehaviour{
 			coll.GetComponent<ZombieController>().isHit(damage);
 			Destroy(gameObject);
 		}else if(coll.CompareTag("levelGeometry")){
+			//sound effect for bullet hitting wall
+			GameObject.Find("background").GetComponent<SpawnScript>().wallHit();
 			Destroy(gameObject);
-			//TODO add level geometry hit sound effect
 		}
 	}
 	//set the damage done by bullets

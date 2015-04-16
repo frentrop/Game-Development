@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour {
 	int fontSize = 200;
 	//audio 
 	public AudioClip bulletFired;
+	bool mute;
+	public Texture2D sound, soundMuted;
 
 	void Start(){
 		//sets speed of in-game time to 1
@@ -61,6 +63,18 @@ public class PlayerController : MonoBehaviour {
 		width = Screen.width;
 		height = Screen.height;
 		windowRect = new Rect(width/4, height/4, width/2, height/2);
+		if(!PlayerPrefs.HasKey("Mute") || PlayerPrefs.GetInt("Mute") == 0){
+			mute = false;
+			//create playerpref for Mute
+			PlayerPrefs.SetInt("Mute",0);
+			//save prefs on device
+			PlayerPrefs.Save();
+			AudioListener.volume = 100;
+		}else if(PlayerPrefs.GetInt("Mute") == 1){
+			//if muted
+			mute = true;
+			AudioListener.volume = 0;
+		}
 	}
 	//GUI drawing
 	void OnGUI(){
@@ -105,6 +119,7 @@ public class PlayerController : MonoBehaviour {
 			if(!pause){
 				//in-game time stops and control boolean pause = true
 				Time.timeScale = 0;
+				AudioListener.pause = true;
 				pause = true;
 			}
 		}
@@ -130,11 +145,28 @@ public class PlayerController : MonoBehaviour {
 		//fontsize depends on screen size
 		buttonStyle.fontSize = Mathf.Min(Mathf.FloorToInt(width/3 * fontSize/1000), 
 		                                 Mathf.FloorToInt(height/3 * fontSize/1000));
+		//mute button
+		if(!mute){
+			if(GUI.Button(new Rect(10, 10, 75, 75), sound, buttonStyle)){
+				AudioListener.volume = 0;
+				mute = true;
+				PlayerPrefs.SetInt("Mute",1);
+				PlayerPrefs.Save();
+			}
+		}else if(mute){
+			if(GUI.Button (new Rect(10,10,75,75), soundMuted, buttonStyle)){
+				AudioListener.volume = 100;
+				mute = false;
+				PlayerPrefs.SetInt("Mute",0);
+				PlayerPrefs.Save();
+			}
+		}
 		//menu buttons
 		if(GUI.Button(new Rect(width/12, height/6 - 60, width/3, 100), "Resume", buttonStyle)){
 			//if Resume is clicked, control bool pause = false, in-game time speed will be normal
 			pause = false;
 			Time.timeScale = 1;
+			AudioListener.pause = false;
 		}else if (GUI.Button(new Rect(width/12, height/4 - 30, width/3, 100), "Restart", buttonStyle)){
 			//if restart, restart the game level
 			Application.LoadLevel("main scene");
@@ -235,6 +267,7 @@ public class PlayerController : MonoBehaviour {
 		if(Time.time > nextFire){
 			//set time when next bullet can be fired
 			nextFire = Time.time + fireRate;
+			audio.volume = 0.2f;
 			audio.PlayOneShot(bulletFired);
 			//create new clone of bullet with proper position and rotation
 			GameObject currentBullet = (GameObject)Instantiate(Bullet, 
@@ -261,6 +294,7 @@ public class PlayerController : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D coll){ 
 		//if collided with zombie and player is not invincible
 		if(coll.CompareTag("zombie") && !isInvincible){
+			//TODO add sound effect for taking damage
 			//Vibrate device
 			Handheld.Vibrate();
 			//make invincible
