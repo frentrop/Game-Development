@@ -12,10 +12,10 @@ GameObject:
   - 114: {fileID: 11400000}
   - 95: {fileID: 9500000}
   - 50: {fileID: 5000000}
-  - 82: {fileID: 8200000}
   - 58: {fileID: 5800000}
   - 61: {fileID: 6100002}
   - 61: {fileID: 6100000}
+  - 82: {fileID: 8200002}
   m_Layer: 0
   m_Name: zombie
   m_TagString: zombie
@@ -83,17 +83,17 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_Size: {x: 1.13, y: .980000019}
   m_Center: {x: -.170000002, y: 0}
---- !u!82 &8200000
+--- !u!82 &8200002
 AudioSource:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_audioClip: {fileID: 8300000, guid: 1371825c2fd661c47955d7d2bbc92aba, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: .100000001
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -169,8 +169,7 @@ MonoBehaviour:
   moveSpeed: 0
   turnSpeed: 0
   health: 100
-  enemyContactSound: {fileID: 0}
-  catContactSound: {fileID: 0}
+  zombieSpawnSound: {fileID: 8300000, guid: 1371825c2fd661c47955d7d2bbc92aba, type: 3}
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

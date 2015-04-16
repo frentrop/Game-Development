@@ -15,8 +15,7 @@ public class ZombieController : MonoBehaviour {
 	private float timeSpentInvincible;
 	public int health = 100;
 	//TODO audio
-	public AudioClip enemyContactSound;
-	public AudioClip catContactSound;
+	public AudioClip zombieSpawnSound;
 	//angle of zombie to face player, vector pos of player
 	private float zombieAngle;
 	private Vector3 targetPos;
@@ -40,6 +39,8 @@ public class ZombieController : MonoBehaviour {
 		                                                        out boundMaxX, 
 		                                                        out boundMinY, 
 		                                                        out boundMaxY);
+		//add apawn sound of zombie with slight variations of delay 
+		audio.PlayDelayed(Random.Range (0F, 1F));
 	}
 	
 	// Update is called once per frame
@@ -93,6 +94,8 @@ public class ZombieController : MonoBehaviour {
 	public void isHit(int damage){
 		//do damage
 		health -= damage;
+		//sound of zombie hit is transferred to SpawnScript, since destroying the object will stop the sound
+		background.GetComponent<SpawnScript>().zombieHit();
 		//still alive?
 		if(health <= 0){
 			//He's dead, Jim, add score, destroy zombie and let level check for other zombies

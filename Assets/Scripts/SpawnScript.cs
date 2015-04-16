@@ -19,6 +19,7 @@ public class SpawnScript : MonoBehaviour {
 	public GameObject powerUpPrefab;
 	//pop up prefab
 	public GameObject popUp;
+	public AudioClip hitZombie;
 
 	// Use this for initialization
 	void Start () {
@@ -113,17 +114,23 @@ public class SpawnScript : MonoBehaviour {
 	/*checks score and gives zombies more health or speed if score gets high enough*/
 	void checkScore(){
 		//With each 1000 points, zombies get better
-		for(int i = 0; i <= GameObject.Find ("Player").GetComponent<PlayerController>().score/1000; i++){
+		for(int i = 0; i < GameObject.Find ("Player").GetComponent<PlayerController>().score/1000; i++){
 			//randomly increase speed or health
 			int rand = Random.Range (0,2);
 			//TODO evaluate if improvements to zombies are not to litte or to big
 			if(rand == 0){
 				extraSpeed += 0.1f;
-				Debug.Log ("Extra speed: " + extraSpeed);
+				Debug.Log ("Extra speed for zombies: " + extraSpeed);
 			}else{
 				extraHealth += 10;
-				Debug.Log("Extra health: " + extraHealth);
+				Debug.Log("Extra health for zombies: " + extraHealth);
 			}
+		}
+	}
+	//play sound when zombie is hit. Played here, since sound won't play in ZombieController when it is destroyed
+	public void zombieHit(){
+		if(!audio.isPlaying){
+			audio.Play();
 		}
 	}
 }

@@ -4,13 +4,12 @@ using System.Collections;
 public class BulletScript : MonoBehaviour{
 	private float bulletSpawn;
 	public float bulletDestroyTime = 2.5f;
-	public float zombieRecoil = 0.03f;
+	public float zombieRecoil = 0.4f;
 	public int damage;
 
 	void Start(){
 		//time when bullet is spawned
 		bulletSpawn = Time.time;
-		//TODO add bullet fired sound effect
 	}
 
 	void Update(){
@@ -24,13 +23,12 @@ public class BulletScript : MonoBehaviour{
 		//check what it hit
 		if(coll.CompareTag("zombie")){
 			//add recoil to hit zombie
-			//TODO fix recoil translation!
-			//bullet is given a force, maybe that creates the problem of wrong translation
-			coll.transform.Translate(zombieRecoil * gameObject.rigidbody2D.velocity.x, 
-			                         zombieRecoil * gameObject.rigidbody2D.velocity.y, 
-			                         0);
+			coll.transform.Translate(zombieRecoil * gameObject.rigidbody2D.velocity.normalized.x, 
+			                         zombieRecoil * gameObject.rigidbody2D.velocity.normalized.y, 
+			                         0,
+			                         Space.World);
+			//decrease health of zombie and play zombie hit sound
 			coll.GetComponent<ZombieController>().isHit(damage);
-			//TODO add bullet hit zombie sound effect
 			Destroy(gameObject);
 		}else if(coll.CompareTag("levelGeometry")){
 			Destroy(gameObject);

@@ -46,6 +46,8 @@ public class PlayerController : MonoBehaviour {
 	public Rect windowRect;// = new Rect(width/3, height/3, width/3, height/3);
 	//fontsize of GUI objects
 	int fontSize = 200;
+	//audio 
+	public AudioClip bulletFired;
 
 	void Start(){
 		//sets speed of in-game time to 1
@@ -233,6 +235,7 @@ public class PlayerController : MonoBehaviour {
 		if(Time.time > nextFire){
 			//set time when next bullet can be fired
 			nextFire = Time.time + fireRate;
+			audio.PlayOneShot(bulletFired);
 			//create new clone of bullet with proper position and rotation
 			GameObject currentBullet = (GameObject)Instantiate(Bullet, 
 			                                                   new Vector2(Gun.rigidbody2D.position.x, 
