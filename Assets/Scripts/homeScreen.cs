@@ -58,5 +58,11 @@ public class homeScreen : MonoBehaviour {
 				PlayerPrefs.Save ();
 			}
 		}
+		//TODO display top score
+		if(PlayerPrefs.HasKey("HighScore")){
+			//Display score in new rect
+			GUI.Label( new Rect (Screen.width*3/5, 0, 500, 64), 
+			          "<size=60><b>Highscore: " + PlayerPrefs.GetInt("HighScore").ToString() + "</b></size>");
+		}
 	}
 }

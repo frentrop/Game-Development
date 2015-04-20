@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour {
 		width = Screen.width;
 		height = Screen.height;
 		windowRect = new Rect(width/4, height/4, width/2, height/2);
-		if(!PlayerPrefs.HasKey("Mute") || PlayerPrefs.GetInt("Mute") == 0){
+		if(PlayerPrefs.GetInt("Mute") == 0){
 			mute = false;
 			//create playerpref for Mute
 			PlayerPrefs.SetInt("Mute",0);
@@ -168,9 +168,11 @@ public class PlayerController : MonoBehaviour {
 			Time.timeScale = 1;
 			AudioListener.pause = false;
 		}else if (GUI.Button(new Rect(width/12, height/4 - 30, width/3, 100), "Restart", buttonStyle)){
+			HighScore();
 			//if restart, restart the game level
 			Application.LoadLevel("main scene");
 		}else if (GUI.Button(new Rect(width/12, height/3, width/3, 100), "Return to home", buttonStyle)){
+			HighScore();
 			//if return to home, load the start screen
 			Application.LoadLevel("home scene");
 		}
@@ -305,7 +307,6 @@ public class PlayerController : MonoBehaviour {
 			if(--health <= 0){
 				//if not, game over!
 				Debug.Log("Game Over");
-				print (health);
 				//reload level after 3 secs
 				Invoke("ReloadLevel", 3f);
 			}
@@ -313,7 +314,14 @@ public class PlayerController : MonoBehaviour {
 	}
 	//reload level
 	void ReloadLevel(){
+		HighScore();
 		Application.LoadLevel("home scene");
+	}
+	void HighScore(){
+		//TODO check if new high score, if so, save it in playerprefs
+		if(score > PlayerPrefs.GetInt("HighScore") || !PlayerPrefs.HasKey("HighScore") ){
+			PlayerPrefs.SetInt("HighScore",score);
+		}
 	}
 	//add points to score, called from other scripts
 	public void addScore(int points){
