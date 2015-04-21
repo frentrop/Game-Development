@@ -50,6 +50,7 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip bulletFired;
 	bool mute;
 	public Texture2D sound, soundMuted;
+	public AudioClip PlayerHit, PowerUp;
 
 	void Start(){
 		//sets speed of in-game time to 1
@@ -297,6 +298,8 @@ public class PlayerController : MonoBehaviour {
 		//if collided with zombie and player is not invincible
 		if(coll.CompareTag("zombie") && !isInvincible){
 			//TODO add sound effect for taking damage
+			audio.volume = 1f;
+			audio.PlayOneShot(PlayerHit);
 			//Vibrate device
 			Handheld.Vibrate();
 			//make invincible
@@ -318,7 +321,7 @@ public class PlayerController : MonoBehaviour {
 		Application.LoadLevel("home scene");
 	}
 	void HighScore(){
-		//TODO check if new high score, if so, save it in playerprefs
+		//check if new high score, if so, save it in playerprefs
 		if(score > PlayerPrefs.GetInt("HighScore") || !PlayerPrefs.HasKey("HighScore") ){
 			PlayerPrefs.SetInt("HighScore",score);
 		}
@@ -342,5 +345,5 @@ public class PlayerController : MonoBehaviour {
 		health += extraHealth;
 		Debug.Log ("Health = " + health);
 	}
-
+	//TODO add power up sound
 }
